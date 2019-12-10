@@ -5,6 +5,25 @@ const jwt = require('jsonwebtoken');
 const { User } = require('../models');
 
 module.exports = {
+  async user (req, res) {
+    const token = req.headers['authorization'];
+
+    try {
+      const payload = jwt.verify(token, process.env.JWT_SECRET);
+      const userId = payload.userId;
+
+      const user = await User.findById(userId, 'email');
+
+      if (user) {
+        res.status(200).json(user);
+      } else {
+        throw new Error('NOT_FOUND');
+      }
+    } catch (err) {
+      throw new Error('INVALID_TOKEN');
+    }
+  },
+
   async register (req, res) {
     const password = req.body.password ? bcrypt.hashSync(req.body.password, 10) : '';
     
