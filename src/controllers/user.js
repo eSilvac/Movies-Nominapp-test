@@ -22,12 +22,13 @@ module.exports = {
       
       res.send({ token });
     } catch (err) {
-      res.status(403).send({ error });
+      console.log(err)
+      res.status(403).send({ err });
     }
   },
   async login (req, res) {
     try {
-      const user = await User.findOne({ username: req.body.username })
+      const user = await User.findOne({ email: req.body.email })
       
       if (user) {
         const isValidPassword = bcrypt.compareSync(
@@ -48,11 +49,12 @@ module.exports = {
 
         res.send({ token });
       } else {
-        res.status(403).res('User Not Found');
+        res.status(403).send('User Not Found');
       }
         
     } catch (err) {
-      res.status(403).send({ error });
+      console.log(err)
+      res.status(403).send({ err });
     } 
   }
 }
