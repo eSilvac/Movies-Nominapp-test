@@ -17,10 +17,10 @@ module.exports = {
       if (user) {
         res.status(200).json(user);
       } else {
-        throw new Error('NOT_FOUND');
+        res.status(403).send('User Not Found');
       }
     } catch (err) {
-      throw new Error('INVALID_TOKEN');
+      res.status(403).send('Invalid Token');
     }
   },
 
@@ -39,9 +39,8 @@ module.exports = {
         { expiresIn: 1000 * 60 * 60 * 24 * 365 }
       );
       
-      res.send({ token });
+      res.send({ token: token, user: {_id: user._id, email: user.email} });
     } catch (err) {
-      console.log(err)
       res.status(403).send({ err });
     }
   },
@@ -66,7 +65,7 @@ module.exports = {
           { expiresIn: 1000 * 60 * 60 * 24 * 365 }
         );
 
-        res.send({ token });
+        res.send({ token: token, user: {_id: user._id, email: user.email} });
       } else {
         res.status(403).send('User Not Found');
       }

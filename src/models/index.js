@@ -1,3 +1,4 @@
 const User = require('./user');
+const List = require('./list');
 
-module.exports = { User };
+module.exports = { User, List };
