@@ -9,10 +9,8 @@ const options = {
 
 const initDB = () => {
   mongoose.connect(db, options)
-    .then(() => console.log("DB Connected!"))
-    .catch(err => {
-      console.log(`DB Connection Error: ${err.message}`);
-  });
+  mongoose.connection.once('open', () => { console.log('MongoDB Connected'); });
+  mongoose.connection.on('error', (err) => { console.log('MongoDB connection error: ', err); });
 }
 
 module.exports = initDB();
